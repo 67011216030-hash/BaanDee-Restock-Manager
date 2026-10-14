@@ -1,103 +1,39 @@
-# BaanDee Living Class 1 Student Package
+# 📦 BaanDee Stockout Risk & Restock Manager
 
-This package accompanies the instructor-led demonstration of the **Delayed Order Support Copilot**. BaanDee Living, its customers, orders and operational records are fictional. All data are synthetic.
+โปรเจกต์นี้เป็นส่วนหนึ่งของรายวิชา โดยต่อยอดจากระบบ BaanDee Living เดิม ให้กลายเป็น **"ระบบตรวจสอบความเสี่ยงสินค้าขาดสต็อกและจัดการใบสั่งเติมสินค้า"** แบบครบวงจร (Full-stack MVP)
 
-Class 1 is a demonstration rather than a coding lab. You may use this package after class to inspect the data, rerun the notebook and explore how the components connect.
+## ✨ ผลงานที่ทีมของเราพัฒนาเพิ่มเติม (Team's Contributions)
 
-## What the project demonstrates
+โปรเจกต์นี้ครอบคลุมการทำงานตั้งแต่ Data Engineering ไปจนถึง Frontend และ Testing:
 
-- inspecting and cleaning exported CSV data with pandas;
-- joining tickets, customers, orders, order lines, products and inventory;
-- handling inconsistent identifiers through documented rules;
-- quarantining ambiguous records instead of silently changing them;
-- retrieving current operational evidence through a local FastAPI service;
-- applying an explicit service policy before generating language;
-- connecting Python functions to a Gradio interface; and
-- protecting important behavior with tests.
+1. **Data Engineering (`scripts/generate_supplier_data.py`)**
+   - สร้างสคริปต์จำลองแหล่งข้อมูลใหม่ (Supplier Catalog) 
+   - ตั้งใจฝังปัญหาคุณภาพข้อมูล (Data Quality Issues) เช่น วันที่กำกวม (Ambiguous Dates), รหัสไม่ตรงรูปแบบ, และค่าตัวเลขที่ติดลบ
 
-## macOS setup
+2. **Data Cleaning & Quarantine (`src/data_prep.py`)**
+   - เขียนกฎการทำความสะอาดข้อมูลซัพพลายเออร์
+   - สร้างระบบ **Quarantine** เพื่อคัดแยกข้อมูลซัพพลายเออร์ที่มีปัญหาออกไปเก็บไว้ต่างหาก (Safeguard) ป้องกันไม่ให้ระบบนำข้อมูลที่ผิดพลาดไปใช้งานต่อ
 
-Use Python 3.11 or 3.12. Open Terminal, move into the extracted folder and run:
+3. **Backend & API (`api/main.py` & `src/api_client.py`)**
+   - สร้าง FastAPI endpoint ใหม่เพื่อดึงข้อมูลซัพพลายเออร์
+   - สร้างระบบ **CRUD** สำหรับใบสั่งเติมสินค้า (Restock Requests) โดยสามารถบันทึกและดึงข้อมูลกลับมาจากไฟล์ JSON ได้จริง
 
-```bash
-chmod +x scripts/*.sh
-./scripts/setup_mac.sh
-./scripts/smoke_test_mac.sh
-```
+4. **Frontend Logic & UI (`src/app.py` & `src/evidence.py`)**
+   - พัฒนาหน้าจอเว็บแอปพลิเคชันด้วย Gradio
+   - วาง Logic ประเมินความเสี่ยงสต็อก โดยตรวจสอบข้อมูลซัพพลายเออร์ที่ถูก Quarantine
+   - หากข้อมูลซัพพลายเออร์มีปัญหา ระบบจะล็อกสถานะใบสั่งซื้อเป็น `Hold for Review (Supplier Error)` อัตโนมัติเพื่อความปลอดภัย
 
-Internet access is required during the first setup to install packages. The smoke test should end with:
+5. **Unit Testing (`tests/test_restock_manager.py`)**
+   - เขียนชุดทดสอบด้วย `pytest` จำนวน 5 กรณี (Test Cases)
+   - ครอบคลุมการทดสอบ Quarantine, API Response (200 & 404), และการทำ CRUD
+   - **สถานะ:** 5 Passed (100% Success)
 
-```text
-MAC_SMOKE_TEST_PASS
-```
+## 🚀 วิธีรันโปรเจกต์ (How to run)
 
-## Start the project
-
-Open two Terminal windows.
-
-Terminal 1:
-
-```bash
-cd /path/to/BaanDee_Class1_Student
-./scripts/start_api.sh
-```
-
-Terminal 2:
-
-```bash
-cd /path/to/BaanDee_Class1_Student
-./scripts/start_app.sh
-```
-
-The API documentation is available at `http://127.0.0.1:8000/docs`. The Gradio application normally opens at `http://127.0.0.1:7860`.
-
-To explore the notebook, use a third Terminal:
-
-```bash
-cd /path/to/BaanDee_Class1_Student
-./scripts/start_notebook.sh
-```
-
-Press `Control+C` in each Terminal to stop a running service.
-
-## Demonstration records
-
-| Ticket | Main data behavior |
-|---|---|
-| `TKT-260731-042` | Short order reference, approved crosswalk and stale export versus current API |
-| `TKT-260731-099` | Unverified order that requires human follow-up |
-| `TKT-260731-117` | Export/API freshness conflict with an API-supplied delivery estimate |
-
-## Project map
-
-```text
-BaanDee_Class1_Student/
-  data/raw/             original synthetic exports
-  data/checkpoints/     cleaned and joined checkpoints
-  data/ground_truth/    fixed mappings and demonstration fixtures
-  notebooks/            annotated Class 1 notebook
-  api/                  local FastAPI service and JSON fixtures
-  src/                  shared cleaning, evidence, policy and app logic
-  tests/                repeatable behavior checks
-  scripts/              setup, start, reset and smoke-test commands
-  docs/student/         company brief, observation sheet and project preview
-```
-
-## AI mode and API keys
-
-The default `fixture` mode is synthetic and does not require an AI API key. It demonstrates the application path without claiming live-model quality.
-
-If you later use a live model, keep the key in your own environment. Never write a real key into the notebook, source code, screenshots, submitted work or Git repository. The included `.env.example` contains placeholders only.
-
-## Using Git for your own work
-
-Do not commit `.venv`, `.env`, logs, executed notebooks, caches or API keys. The included `.gitignore` excludes these local files.
-
-For the final project, your team should create its own repository and record meaningful changes with clear commit messages. The complete final-project brief and assessment requirements will be provided separately.
-
-## Student documents
-
-- `docs/student/COMPANY_BRIEF.md`
-- `docs/student/OBSERVATION_SHEET.md`
-- `docs/student/FINAL_PROJECT_PREVIEW.md`
-
+1. เปิด Terminal และเปิดใช้งาน Virtual Environment: `.\.venv\Scripts\activate`
+2. สร้างข้อมูลและคลีนข้อมูล: 
+   - `python scripts/generate_supplier_data.py`
+   - `python src/data_prep.py`
+3. รัน API (เปิด Terminal ที่ 1): `python -m uvicorn api.main:app --host 127.0.0.1 --port 8000`
+4. รันหน้าเว็บ (เปิด Terminal ที่ 2): `python -m src.app`
+5. รันชุดทดสอบ: `pytest tests/test_restock_manager.py -v`
