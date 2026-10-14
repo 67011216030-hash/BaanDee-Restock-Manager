@@ -1,0 +1,26 @@
+{
+  "REQ-SKU-BD-220": {
+    "request_id": "REQ-SKU-BD-220",
+    "product_id": "SKU-BD-220",
+    "order_qty": 0,
+    "notes": "Auto-drafted based on risk level.",
+    "status": "Hold for Review (Supplier Error)",
+    "updated_at": "2026-10-14T08:20:07.592401+00:00"
+  },
+  "REQ-SKU-KT-104": {
+    "request_id": "REQ-SKU-KT-104",
+    "product_id": "SKU-KT-104",
+    "order_qty": 10,
+    "notes": "Auto-drafted based on risk level.",
+    "status": "Draft",
+    "updated_at": "2026-10-14T08:19:52.535483+00:00"
+  },
+  "REQ-SKU-BD-220-TEST": {
+    "request_id": "REQ-SKU-BD-220-TEST",
+    "product_id": "SKU-BD-220",
+    "order_qty": 50,
+    "notes": "Test ordering from pytest",
+    "status": "Draft",
+    "updated_at": "2026-10-14T08:27:10.276353+00:00"
+  }
+}

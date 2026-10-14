@@ -1,0 +1,4 @@
+supplier_record_id,product_reference,supplier_name,reorder_point,lead_time_days,min_order_qty,contract_date,product_id_clean,contract_date_clean,contract_date_quality,reorder_point_num,lead_time_num
+SR-002,SUP-BD220,Siam Bedding Ltd.,10,5.0,20,07/08/2026,SKU-BD-220,,ambiguous,10,5.0
+SR-003, sku-0005 ,Bath & Beyond,-2,2.0,15,2025-06-20,SKU-0005,2025-06-20T00:00:00,parsed,-2,2.0
+SR-004,SKU-0077,Siam Bedding Ltd.,15,,30,2026-02-28,SKU-0077,2026-02-28T00:00:00,parsed,15,

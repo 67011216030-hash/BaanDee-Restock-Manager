@@ -1,0 +1,2 @@
+supplier_record_id,product_reference,supplier_name,reorder_point,lead_time_days,min_order_qty,contract_date,product_id_clean,contract_date_clean,contract_date_quality,reorder_point_num,lead_time_num
+SR-001,SUP-KT104,Thai Kitchenware Co.,5,3.0,10,2025-01-15,SKU-KT-104,2025-01-15T00:00:00,parsed,5,3.0
